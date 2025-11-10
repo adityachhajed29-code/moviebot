@@ -5,6 +5,7 @@ from openai import OpenAI
 
 app = Flask(__name__)
 
+# ✅ Use environment variable from Render (set HF_TOKEN in Render dashboard)
 client = OpenAI(
     base_url="https://router.huggingface.co/v1",
     api_key=os.environ.get("HF_TOKEN"),
@@ -34,7 +35,8 @@ def ask():
 
     try:
         completion = client.chat.completions.create(
-            model="HuggingFaceH4/zephyr-7b-beta:featherless-ai",
+            # ✅ Use the correct Hugging Face model endpoint name
+            model="HuggingFaceH4/zephyr-7b-beta",
             messages=[
                 {"role": "system", "content": (
                     "You are a helpful movie recommender. "
@@ -57,5 +59,8 @@ def ask():
         print("Error:", e)
         return jsonify({"reply": "Sorry, something went wrong."}), 500
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    # ✅ Important for Render: use host='0.0.0.0' and a dynamic port
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
