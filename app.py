@@ -36,7 +36,7 @@ def ask():
     try:
         completion = client.chat.completions.create(
             # ✅ Use the correct Hugging Face model endpoint name
-            model="HuggingFaceH4/zephyr-7b-beta",
+            model="meta-llama/Llama-3.2-1B-Instruct",
             messages=[
                 {"role": "system", "content": (
                     "You are a helpful movie recommender. "
